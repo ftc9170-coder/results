@@ -3,121 +3,155 @@ import pandas as pd
 from datetime import datetime
 
 # ==========================================
-# 1. إعدادات الهوية البصرية (تخصيص د. صابر)
+# 1. إعدادات الهوية والتخصيص
 # ==========================================
 LECTURER_NAME = "د. صابر الفطيسي"
 INSTITUTE_NAME = "المعهد العالي للعلوم والتقنية - سوق الخميس امسيحل"
 YEAR_SESSION = "العام الدراسي 2025 - 2026"
-# رابط شعار المعهد (تم وضعه كرمز تعبيري مؤقتاً، يمكنك استبداله برابط الصورة المرفوعة)
-LOGO_URL = "https://raw.githubusercontent.com/ftc9170-coder/repo/master/image_166501.jpg" 
-
-# رابط ملف جوجل شيت الخاص بك
+LOGO_FILE = "image_166501.jpg" 
 SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs6IHWs1o90rFma8_QnUS-Yoi1gRO8X8pEfK8JcfBtNiI_90R51P0g3D9xIAlpmF3jxuGYK4yTWflN/pub?output=csv"
 
-st.set_page_config(
-    page_title=f"منصة {LECTURER_NAME}",
-    page_icon="🎓",
-    layout="centered"
-)
+# توزيع الدرجات (النهايات العظمى) - يمكنك تعديلها من هنا
+MAX_SCORES = {
+    "عملي_نصفي": 15,
+    "نظري_نصفي": 15,
+    "النهائي_العملي": 20,
+    "النهائي_النظري": 50,
+    "المجموع_النهائي": 100
+}
+
+st.set_page_config(page_title=f"منصة {LECTURER_NAME}", page_icon="🎓", layout="centered")
 
 @st.cache_data(ttl=60)
 def load_data():
-    try:
-        return pd.read_csv(SHEET_CSV_URL)
-    except:
-        return None
+    try: return pd.read_csv(SHEET_CSV_URL)
+    except: return None
 
 # ==========================================
-# 2. تصميم الواجهة (CSS)
+# 2. تحسين الخطوط والأحجام (CSS المطور)
 # ==========================================
-st.markdown(f"""
+st.markdown("""
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
     <style>
-    .main {{ background-color: #f4f7f9; }}
-    .stTextInput > div > div > input {{
-        text-align: center; border: 2px solid #003366; border-radius: 12px; font-size: 20px;
-    }}
-    .result-card {{
-        background: white; padding: 30px; border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        border-top: 10px solid #003366; direction: rtl; text-align: right;
-    }}
-    .institute-header {{
-        text-align: center; color: #003366; margin-bottom: 20px;
-    }}
-    .score-grid {{
-        display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
-    }}
-    .score-item {{
-        background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #eee;
-    }}
-    .final-banner {{
-        background: #003366; color: white; padding: 20px; border-radius: 15px; text-align: center; margin-top: 25px;
-    }}
+    html, body, [class*="css"], .stMarkdown, p, h1, h2, h3, span, div {
+        font-family: 'Cairo', sans-serif !important;
+        direction: rtl;
+    }
+
+    .main { background-color: #f7f9fc; }
+    
+    /* تكبير خط إدخال رقم القيد */
+    .stTextInput > div > div > input {
+        text-align: center; border: 3px solid #003366; border-radius: 15px; 
+        font-size: 30px !important; font-weight: 900; height: 70px; color: #003366;
+    }
+
+    /* بطاقة النتيجة */
+    .result-card {
+        background: white; padding: 40px; border-radius: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        border-right: 15px solid #003366; text-align: right;
+    }
+
+    /* تكبير الأرقام داخل المربعات */
+    .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
+    
+    .score-item {
+        background: #f0f4f8; padding: 20px; border-radius: 15px; 
+        text-align: center; border: 2px solid #e1e8ed;
+    }
+
+    .score-title { font-size: 18px; color: #555; font-weight: bold; margin-bottom: 10px; }
+    
+    /* تنسيق الدرجة (مثلاً 15/15) */
+    .score-value { 
+        font-size: 32px !important; 
+        color: #003366; 
+        font-weight: 900; 
+        letter-spacing: 1px;
+    }
+
+    /* بانر المجموع النهائي */
+    .final-banner {
+        background: linear-gradient(135deg, #003366 0%, #004a99 100%);
+        color: white; padding: 30px; border-radius: 20px; 
+        text-align: center; margin-top: 35px;
+    }
+    
+    .total-value { font-size: 55px !important; font-weight: 900; color: #f6e09e; }
+    .grade-label { font-size: 28px; font-weight: 900; color: white; margin-top: 10px; }
+    
+    .stButton > button {
+        height: 60px; font-size: 22px !important; font-weight: bold; border-radius: 15px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. عرض الشعار والعناوين
+# 3. الواجهة الرسومية
 # ==========================================
-col1, col2, col3 = st.columns([1,2,1])
+col1, col2, col3 = st.columns([1,1.5,1])
 with col2:
-    # عرض الشعار
-    st.image("image_166501.jpg", width=150) # تأكد من رفع صورة الشعار بنفس الاسم في GitHub
+    try: st.image(LOGO_FILE, width=200)
+    except: st.info("يرجى رفع الشعار image_166501.jpg")
 
 st.markdown(f"""
-    <div class="institute-header">
-        <h2 style="margin-bottom:0;">{INSTITUTE_NAME}</h2>
-        <h3 style="color: #d4af37; margin-top:5px;">المنصة الرقمية للنتائج</h3>
-        <p style="font-size: 18px;"><b>بإشراف: {LECTURER_NAME}</b></p>
+    <div style="text-align:center; color:#003366;">
+        <h1 style="font-size: 32px;">{INSTITUTE_NAME}</h1>
+        <h2 style="color: #d4af37; font-size: 26px;">المنصة الرقمية للأستاذ {LECTURER_NAME}</h2>
     </div>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 4. منطق البحث
-# ==========================================
-st.markdown("---")
-student_id = st.text_input("أدخل رقم القيد للاستعلام عن نتيجتك", placeholder="مثال: 2026100")
+student_id = st.text_input("أدخل رقم القيد للاستعلام", placeholder="رقم القيد")
 
-if st.button("عرض النتيجة"):
+if st.button("🔍 استعلام عن النتيجة"):
     if student_id:
         df = load_data()
         if df is not None:
-            df['رقم_القيد'] = df['رقم_القيد'].astype(str)
+            df['رقم_القيد'] = df['رقم_القيد'].astype(str).str.strip()
             result = df[df['رقم_القيد'] == student_id.strip()]
             
             if not result.empty:
                 row = result.iloc[0]
                 st.balloons()
                 
+                # دالة لتنسيق الدرجة بشكل (درجة/عظمى)
+                def fmt(val, max_s):
+                    if pd.isnull(val): return "⏳"
+                    return f"{int(val)} / {max_s}"
+
                 st.markdown(f"""
                 <div class="result-card">
-                    <h2 style="text-align:center;">الطالب: {row['اسم_الطالب']}</h2>
-                    <hr>
+                    <h1 style="text-align:center; color:#333; font-size:40px; font-weight:900;">{row['اسم_الطالب']}</h1>
                     <div class="score-grid">
-                        <div class="score-item"><b>عملي نصفي</b><br>{row['عملي_نصفي']}</div>
-                        <div class="score-item"><b>نظري نصفي</b><br>{row['نظري_نصفي']}</div>
-                        <div class="score-item"><b>النهائي العملي</b><br>{row['النهائي_العملي'] if pd.notnull(row['النهائي_العملي']) else '⏳'}</div>
-                        <div class="score-item"><b>النهائي النظري</b><br>{row['النهائي_النظري'] if pd.notnull(row['النهائي_النظري']) else '⏳'}</div>
+                        <div class="score-item">
+                            <div class="score-title">عملي نصفي</div>
+                            <div class="score-value">{fmt(row['عملي_نصفي'], MAX_SCORES['عملي_نصفي'])}</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-title">نظري نصفي</div>
+                            <div class="score-value">{fmt(row['نظري_نصفي'], MAX_SCORES['نظري_نصفي'])}</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-title">النهائي العملي</div>
+                            <div class="score-value">{fmt(row['النهائي_العملي'], MAX_SCORES['النهائي_العملي'])}</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-title">النهائي النظري</div>
+                            <div class="score-value">{fmt(row['النهائي_النظري'], MAX_SCORES['النهائي_النظري'])}</div>
+                        </div>
                     </div>
                     <div class="final-banner">
-                        <div style="font-size:14px; opacity:0.8;">المجموع النهائي</div>
-                        <div style="font-size:32px; font-weight:bold;">{row['المجموع_النهائي'] if pd.notnull(row['المجموع_النهائي']) else 'قيد الرصد'}</div>
-                        <div style="font-size:20px; margin-top:10px; color:#d4af37;">التقدير: {row['التقدير'] if pd.notnull(row['التقدير']) else '--'}</div>
+                        <div style="font-size:20px;">المجموع النهائي العام</div>
+                        <div class="total-value">{fmt(row['المجموع_النهائي'], MAX_SCORES['المجموع_النهائي'])}</div>
+                        <div class="grade-label">التقدير: {row['التقدير'] if pd.notnull(row['التقدير']) else '--'}</div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
             else:
-                st.error("رقم القيد غير موجود. يرجى التأكد من الرقم والمحاولة مرة أخرى.")
+                st.error("رقم القيد غير موجود.")
     else:
-        st.warning("يرجى إدخال رقم القيد أولاً.")
+        st.warning("أدخل رقم القيد أولاً.")
 
-# ==========================================
-# 5. التذييل والمشاركة
-# ==========================================
-st.markdown(f"""
-    <br><br>
-    <div style="text-align:center; color:#666; font-size:12px;">
-        <p>جميع الحقوق محفوظة © {LECTURER_NAME} - {YEAR_SESSION}</p>
-        <p>{INSTITUTE_NAME}</p>
-    </div>
-""", unsafe_allow_html=True)
+st.markdown(f"<div style='text-align:center; margin-top:50px; color:#888;'>جميع الحقوق محفوظة &copy; {LECTURER_NAME}</div>", unsafe_allow_html=True)
