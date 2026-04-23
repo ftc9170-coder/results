@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنصة الرقمية - د. صابر الفطيسي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #003366; /* أزرق ملكي */
+            --accent: #d4af37;  /* ذهبي */
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main-card {
+            width: 100%;
+            max-width: 550px;
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 8px solid var(--primary);
+        }
+
+        .logo-img {
+            width: 160px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+
+        h1 { color: var(--primary); font-size: 24px; margin: 10px 0; font-weight: 900; }
+        h2 { color: var(--accent); font-size: 20px; margin: 0 0 35px 0; font-weight: 700; }
+
+        .search-area { margin-bottom: 30px; }
+
+        input {
+            width: 100%;
+            padding: 18px;
+            font-size: 22px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            text-align: center;
+            font-family: 'Cairo';
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0,51,102,0.1); }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #002244; transform: translateY(-2px); }
+
+        /* منطقة النتائج */
+        #resultBox { display: none; margin-top: 40px; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .student-name { font-size: 28px; font-weight: 900; color: #333; margin-bottom: 25px; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .grid-item {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .label { font-size: 15px; color: #64748b; font-weight: bold; }
+        .value { font-size: 24px; font-weight: 900; color: var(--primary); margin-top: 5px; }
+
+        .final-banner {
+            margin-top: 25px;
+            background: linear-gradient(135deg, var(--primary), #004a99);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+        }
+
+        .total { font-size: 45px; font-weight: 900; color: var(--accent); }
+        .grade { font-size: 24px; font-weight: 700; margin-top: 10px; }
+
+        .footer { margin-top: 40px; font-size: 13px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <img src="image_166501.jpg" alt="شعار المعهد" class="logo-img">
+    <h1>المعهد العالي للعلوم والتقنية - سوق الخميس امسيحل</h1>
+    <h2>المنصة الرقمية لـ د. صابر الفطيسي</h2>
+
+    <div class="search-area">
+        <input type="text" id="studentId" placeholder="أدخل رقم القيد">
+        <button onclick="searchResult()">استعلام عن النتيجة</button>
+    </div>
+
+    <div id="resultBox">
+        <div class="student-name" id="dispName"></div>
+        <div class="grid">
+            <div class="grid-item"><div class="label">عملي نصفي</div><div class="value" id="val1"></div></div>
+            <div class="grid-item"><div class="label">نظري نصفي</div><div class="value" id="val2"></div></div>
+            <div class="grid-item"><div class="label">النهائي العملي</div><div class="value" id="val3"></div></div>
+            <div class="grid-item"><div class="label">النهائي النظري</div><div class="value" id="val4"></div></div>
+        </div>
+        <div class="final-banner">
+            <div style="font-size: 16px; opacity: 0.9;">المجموع النهائي</div>
+            <div class="total" id="valTotal"></div>
+            <div id="valGrade" class="grade"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        جميع الحقوق محفوظة &copy; د. صابر الفطيسي - 2026
+    </div>
+</div>
+
+<script>
+    async function searchResult() {
+        const id = document.getElementById('studentId').value.trim();
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSs6IHWs1o90rFma8_QnUS-Yoi1gRO8X8pEfK8JcfBtNiI_90R51P0g3D9xIAlpmF3jxuGYK4yTWflN/pub?output=csv';
+        
+        if(!id) { alert("يرجى إدخال رقم القيد"); return; }
+
+        try {
+            const response = await fetch(csvUrl);
+            const data = await response.text();
+            const rows = data.split('\n').map(row => row.split(','));
+            
+            // البحث عن الطالب في العمود الأول
+            const student = rows.find(r => r[0].trim() === id);
+
+            if (student) {
+                document.getElementById('resultBox').style.display = 'block';
+                document.getElementById('dispName').innerText = student[1];
+                document.getElementById('val1').innerText = (student[2] || '0') + " / 15";
+                document.getElementById('val2').innerText = (student[3] || '0') + " / 25";
+                document.getElementById('val3').innerText = (student[4] || '⏳') + " / 15";
+                document.getElementById('val4').innerText = (student[5] || '⏳') + " / 45";
+                document.getElementById('valTotal').innerText = (student[6] || 'قيد الرصد') + " / 100";
+                document.getElementById('valGrade').innerText = "التقدير: " + (student[7] || '--');
+                
+                // النزول تلقائياً للنتيجة
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            } else {
+                alert("رقم القيد غير موجود في منظومة د. صابر");
+            }
+        } catch (error) {
+            alert("عذراً، حدث خطأ في الاتصال بالبيانات");
+        }
+    }
+</script>
+
+</body>
+</html>
