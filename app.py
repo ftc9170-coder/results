@@ -5,18 +5,18 @@ from datetime import datetime
 # ==========================================
 # 1. إعدادات الهوية والتخصيص
 # ==========================================
-LECTURER_NAME = "صابر الفطيسي"
+LECTURER_NAME = "د. صابر الفطيسي"
 INSTITUTE_NAME = "المعهد العالي للعلوم والتقنية - سوق الخميس امسيحل"
 YEAR_SESSION = "العام الدراسي 2025 - 2026"
 LOGO_FILE = "image_166501.jpg" 
 SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs6IHWs1o90rFma8_QnUS-Yoi1gRO8X8pEfK8JcfBtNiI_90R51P0g3D9xIAlpmF3jxuGYK4yTWflN/pub?output=csv"
 
-# توزيع الدرجات (النهايات العظمى) - يمكنك تعديلها من هنا
+# توزيع الدرجات (النهايات العظمى)
 MAX_SCORES = {
     "عملي_نصفي": 15,
-    "نظري_نصفي": 25,
-    "النهائي_العملي": 15,
-    "النهائي_النظري": 45,
+    "نظري_نصفي": 15,
+    "النهائي_العملي": 20,
+    "النهائي_النظري": 50,
     "المجموع_النهائي": 100
 }
 
@@ -28,7 +28,7 @@ def load_data():
     except: return None
 
 # ==========================================
-# 2. تحسين الخطوط والأحجام (CSS المطور)
+# 2. حل مشكلة "الخانة المقصوصة" وتحسين الأحجام
 # ==========================================
 st.markdown("""
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
@@ -41,49 +41,72 @@ st.markdown("""
 
     .main { background-color: #f7f9fc; }
     
-    /* تكبير خط إدخال رقم القيد */
+    /* حل مشكلة الخانة المقصوصة وتوسيعها */
+    .stTextInput > div {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
     .stTextInput > div > div > input {
-        text-align: center; border: 3px solid #003366; border-radius: 15px; 
-        font-size: 30px !important; font-weight: 900; height: 70px; color: #003366;
+        text-align: center; 
+        border: 3px solid #003366 !important; 
+        border-radius: 15px !important; 
+        font-size: 28px !important; 
+        font-weight: 900 !important; 
+        height: 75px !important; 
+        color: #003366 !important;
+        padding: 10px !important; /* مساحة داخلية لمنع القص */
+        box-sizing: border-box !important;
     }
 
     /* بطاقة النتيجة */
     .result-card {
-        background: white; padding: 40px; border-radius: 30px;
+        background: white; padding: 30px; border-radius: 30px;
         box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         border-right: 15px solid #003366; text-align: right;
+        width: 100%;
+        box-sizing: border-box;
     }
 
-    /* تكبير الأرقام داخل المربعات */
-    .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
+    .score-grid { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 12px; 
+        margin-top: 25px; 
+    }
     
     .score-item {
-        background: #f0f4f8; padding: 20px; border-radius: 15px; 
+        background: #f0f4f8; padding: 15px; border-radius: 15px; 
         text-align: center; border: 2px solid #e1e8ed;
     }
 
-    .score-title { font-size: 18px; color: #555; font-weight: bold; margin-bottom: 10px; }
+    .score-title { font-size: 16px; color: #555; font-weight: bold; }
     
-    /* تنسيق الدرجة (مثلاً 15/15) */
     .score-value { 
-        font-size: 32px !important; 
+        font-size: 26px !important; 
         color: #003366; 
         font-weight: 900; 
-        letter-spacing: 1px;
     }
 
-    /* بانر المجموع النهائي */
+    /* المجموع النهائي */
     .final-banner {
         background: linear-gradient(135deg, #003366 0%, #004a99 100%);
-        color: white; padding: 30px; border-radius: 20px; 
-        text-align: center; margin-top: 35px;
+        color: white; padding: 25px; border-radius: 20px; 
+        text-align: center; margin-top: 30px;
     }
     
-    .total-value { font-size: 55px !important; font-weight: 900; color: #f6e09e; }
-    .grade-label { font-size: 28px; font-weight: 900; color: white; margin-top: 10px; }
+    .total-value { font-size: 45px !important; font-weight: 900; color: #f6e09e; }
+    .grade-label { font-size: 26px; font-weight: 900; color: white; }
     
+    /* زر البحث */
     .stButton > button {
-        height: 60px; font-size: 22px !important; font-weight: bold; border-radius: 15px;
+        width: 100% !important;
+        height: 65px !important; 
+        font-size: 22px !important; 
+        font-weight: 900 !important; 
+        border-radius: 15px !important;
+        background-color: #003366 !important;
+        color: white !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -91,19 +114,20 @@ st.markdown("""
 # ==========================================
 # 3. الواجهة الرسومية
 # ==========================================
-col1, col2, col3 = st.columns([1,1.5,1])
+col1, col2, col3 = st.columns([1,2,1])
 with col2:
-    try: st.image(LOGO_FILE, width=200)
+    try: st.image(LOGO_FILE, width=180)
     except: st.info("يرجى رفع الشعار image_166501.jpg")
 
 st.markdown(f"""
-    <div style="text-align:center; color:#003366;">
-        <h1 style="font-size: 32px;">{INSTITUTE_NAME}</h1>
-        <h2 style="color: #d4af37; font-size: 26px;">المنصة الرقمية للدكتور {LECTURER_NAME}</h2>
+    <div style="text-align:center; color:#003366; margin-bottom: 20px;">
+        <h1 style="font-size: 28px;">{INSTITUTE_NAME}</h1>
+        <h2 style="color: #d4af37; font-size: 24px;">المنصة الرقمية للأستاذ {LECTURER_NAME}</h2>
     </div>
 """, unsafe_allow_html=True)
 
-student_id = st.text_input("أدخل رقم القيد للاستعلام", placeholder="رقم القيد")
+# خانة البحث
+student_id = st.text_input("", placeholder="أدخل رقم القيد هنا", label_visibility="collapsed")
 
 if st.button("🔍 استعلام عن النتيجة"):
     if student_id:
@@ -116,14 +140,13 @@ if st.button("🔍 استعلام عن النتيجة"):
                 row = result.iloc[0]
                 st.balloons()
                 
-                # دالة لتنسيق الدرجة بشكل (درجة/عظمى)
                 def fmt(val, max_s):
                     if pd.isnull(val): return "⏳"
                     return f"{int(val)} / {max_s}"
 
                 st.markdown(f"""
                 <div class="result-card">
-                    <h1 style="text-align:center; color:#333; font-size:40px; font-weight:900;">{row['اسم_الطالب']}</h1>
+                    <h1 style="text-align:center; color:#333; font-size:32px; font-weight:900; margin-bottom:20px;">{row['اسم_الطالب']}</h1>
                     <div class="score-grid">
                         <div class="score-item">
                             <div class="score-title">عملي نصفي</div>
@@ -143,7 +166,7 @@ if st.button("🔍 استعلام عن النتيجة"):
                         </div>
                     </div>
                     <div class="final-banner">
-                        <div style="font-size:20px;">المجموع النهائي العام</div>
+                        <div style="font-size:18px;">المجموع النهائي العام</div>
                         <div class="total-value">{fmt(row['المجموع_النهائي'], MAX_SCORES['المجموع_النهائي'])}</div>
                         <div class="grade-label">التقدير: {row['التقدير'] if pd.notnull(row['التقدير']) else '--'}</div>
                     </div>
@@ -154,4 +177,4 @@ if st.button("🔍 استعلام عن النتيجة"):
     else:
         st.warning("أدخل رقم القيد أولاً.")
 
-st.markdown(f"<div style='text-align:center; margin-top:50px; color:#888;'>جميع الحقوق محفوظة &copy; {LECTURER_NAME}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='text-align:center; margin-top:50px; color:#888; font-size:14px;'>جميع الحقوق محفوظة &copy; {LECTURER_NAME}<br>{INSTITUTE_NAME}</div>", unsafe_allow_html=True)
