@@ -5,7 +5,7 @@ from datetime import datetime
 # ==========================================
 # 1. إعدادات الهوية والتخصيص
 # ==========================================
-LECTURER_NAME = "د. صابر الفطيسي"
+LECTURER_NAME = "صابر الفطيسي"
 INSTITUTE_NAME = "المعهد العالي للعلوم والتقنية - سوق الخميس امسيحل"
 YEAR_SESSION = "العام الدراسي 2025 - 2026"
 LOGO_FILE = "image_166501.jpg" 
@@ -99,7 +99,7 @@ with col2:
 st.markdown(f"""
     <div style="text-align:center; color:#003366;">
         <h1 style="font-size: 32px;">{INSTITUTE_NAME}</h1>
-        <h2 style="color: #d4af37; font-size: 26px;">المنصة الرقمية للأستاذ {LECTURER_NAME}</h2>
+        <h2 style="color: #d4af37; font-size: 26px;">المنصة الرقمية للدكتور {LECTURER_NAME}</h2>
     </div>
 """, unsafe_allow_html=True)
 
