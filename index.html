@@ -9,82 +9,58 @@
         :root { --primary: #003366; --accent: #d4af37; --bg: #f4f7f9; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; display: flex; justify-content: center; padding: 15px; direction: rtl; }
         .main-card { width: 100%; max-width: 450px; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; border-top: 6px solid var(--primary); }
-        .logo-img { width: 120px; margin-bottom: 15px; }
+        .logo-img { width: 110px; margin-bottom: 15px; }
         h1 { color: var(--primary); font-size: 19px; margin: 5px 0; font-weight: 900; }
         h2 { color: var(--accent); font-size: 17px; margin: 0 0 25px 0; font-weight: 700; }
         input { width: 100%; padding: 14px; font-size: 19px; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; font-family: 'Cairo'; box-sizing: border-box; outline: none; font-weight: bold; }
-        button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-        button:hover { background: #002244; }
+        button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         #resultBox { display: none; margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px; }
-        .student-name { font-size: 20px; font-weight: 900; color: #333; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .grid-item { background: #f8fafc; padding: 10px 15px; border-radius: 12px; border: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center; height: 45px; }
-        @media (max-width: 400px) { .grid { grid-template-columns: 1fr; } }
+        .student-name { font-size: 20px; font-weight: 900; color: #333; margin-bottom: 15px; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+        .grid-item { background: #f8fafc; padding: 10px 15px; border-radius: 10px; border: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center; }
         .label { font-size: 13px; color: #64748b; font-weight: bold; }
         .score-row { font-size: 16px; font-weight: 900; color: var(--primary); }
-        .max-score { color: #cbd5e0; font-size: 12px; font-weight: normal; }
         .final-banner { margin-top: 20px; background: linear-gradient(135deg, var(--primary), #004a99); color: white; padding: 15px; border-radius: 15px; }
-        .total-row { font-size: 32px; font-weight: 900; color: var(--accent); margin: 5px 0; }
-        .grade-text { font-size: 18px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 5px; margin-top: 5px; }
+        .total-row { font-size: 32px; font-weight: 900; color: var(--accent); }
         .footer { margin-top: 30px; font-size: 11px; color: #94a3b8; }
     </style>
 </head>
 <body>
-
 <div class="main-card">
     <img src="image_166501.jpg" alt="Logo" class="logo-img">
-    <h1>المعهد العالي للعلوم والتقنية - سوق الخميس امسيحل</h1>
+    <h1>المعهد العالي للعلوم والتقنية</h1>
     <h2>المنصة الرقمية للدكتور صابر الفطيسي</h2>
-
     <div class="search-area">
         <input type="text" id="studentId" placeholder="أدخل رقم القيد">
-        <button id="searchBtn" onclick="searchResult()">استعلام عن النتيجة</button>
+        <button onclick="searchResult()">استعلام عن النتيجة</button>
     </div>
-
     <div id="resultBox">
         <div class="student-name" id="dispName"></div>
         <div class="grid">
-            <div class="grid-item"><span class="label">عملي نصفي</span><span class="score-row"><span id="val1"></span> <span class="max-score">/ 15</span></span></div>
-            <div class="grid-item"><span class="label">نظري نصفي</span><span class="score-row"><span id="val2"></span> <span class="max-score">/ 25</span></span></div>
-            <div class="grid-item"><span class="label">النهائي العملي</span><span class="score-row"><span id="val3"></span> <span class="max-score">/ 15</span></span></div>
-            <div class="grid-item"><span class="label">النهائي النظري</span><span class="score-row"><span id="val4"></span> <span class="max-score">/ 45</span></span></div>
+            <div class="grid-item"><span class="label">عملي نصفي</span><span class="score-row"><span id="val1"></span> / 15</span></div>
+            <div class="grid-item"><span class="label">نظري نصفي</span><span class="score-row"><span id="val2"></span> / 25</span></div>
+            <div class="grid-item"><span class="label">النهائي العملي</span><span class="score-row"><span id="val3"></span> / 15</span></div>
+            <div class="grid-item"><span class="label">النهائي النظري</span><span class="score-row"><span id="val4"></span> / 45</span></div>
         </div>
         <div class="final-banner">
-            <div style="font-size: 13px; opacity: 0.9;">المجموع الكلي</div>
-            <div class="total-row"><span id="valTotal"></span> <small style="font-size:16px; color:white;">/ 100</small></div>
-            <div id="valGrade" class="grade-text"></div>
+            <div style="font-size: 13px;">المجموع النهائي</div>
+            <div class="total-row"><span id="valTotal"></span> / 100</div>
+            <div id="valGrade" style="font-size: 18px; font-weight: 700; margin-top: 5px;"></div>
         </div>
     </div>
     <div class="footer">جميع الحقوق محفوظة &copy; د. صابر الفطيسي - 2026</div>
 </div>
-
 <script>
     async function searchResult() {
         const id = document.getElementById('studentId').value.trim();
-        const btn = document.getElementById('searchBtn');
         if(!id) return;
-
-        btn.innerText = "جاري البحث...";
-        btn.disabled = true;
-
-        // الرابط المباشر لملف CSV
-        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs6IHWs1o90rFma8_QnUS-Yoi1gRO8X8pEfK8JcfBtNiI_90R51P0g3D9xIAlpmF3jxuGYK4yTWflN/pub?output=csv";
-
+        // رابط بسيط جداً لن يرفضه الكمبيوتر
+        const csvUrl = "https://docs.google.com/spreadsheets/d/1IHWs1o90rFma8_QnUS-Yoi1gRO8X8pEfK8JcfBtNiI_90R51P0g3D9xIAlpmF3jxuGYK4yTWflN/export?format=csv";
         try {
-            // إضافة عشوائي للرابط لمنع الكاش على الكمبيوتر
-            const fetchUrl = `${csvUrl}&cachebuster=${new Date().getTime()}`;
-            const response = await fetch(fetchUrl);
-            
-            if (!response.ok) throw new Error('Network error');
-            
+            const response = await fetch(csvUrl);
             const data = await response.text();
-            const rows = data.split(/\r?\n/).map(row => {
-                // تقسيم الصف بذكاء للتعامل مع الفواصل داخل النصوص
-                return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            });
-            
+            const rows = data.split('\n').map(row => row.split(','));
             const student = rows.find(r => r[0].replace(/"/g, '').trim() === id);
-
             if (student) {
                 document.getElementById('resultBox').style.display = 'block';
                 document.getElementById('dispName').innerText = student[1].replace(/"/g, '');
@@ -94,17 +70,8 @@
                 document.getElementById('val4').innerText = (student[5] || '⏳').replace(/"/g, '');
                 document.getElementById('valTotal').innerText = (student[6] || '0').replace(/"/g, '');
                 document.getElementById('valGrade').innerText = "التقدير: " + (student[7] || '--').replace(/"/g, '');
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            } else {
-                alert("رقم القيد غير موجود في المنظومة.");
-            }
-        } catch (e) {
-            console.error(e);
-            alert("حدث خطأ في الاتصال بالبيانات. يرجى تحديث الصفحة (Refresh) والمحاولة مرة أخرى.");
-        } finally {
-            btn.innerText = "استعلام عن النتيجة";
-            btn.disabled = false;
-        }
+            } else { alert("رقم القيد غير موجود"); }
+        } catch (e) { alert("تأكد من فتح الملف للمشاركة العامة في جوجل شيت"); }
     }
 </script>
 </body>
