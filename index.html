@@ -2,69 +2,128 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>المنصة الرقمية للدكتور صابر الفطيسي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #003366; --accent: #d4af37; --bg: #f4f7f9; }
-        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; display: flex; justify-content: center; padding: 15px; direction: rtl; }
-        .main-card { width: 100%; max-width: 450px; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; border-top: 6px solid var(--primary); }
-        .logo-img { width: 110px; margin-bottom: 15px; }
-        h1 { color: var(--primary); font-size: 19px; margin: 5px 0; font-weight: 900; }
-        h2 { color: var(--accent); font-size: 17px; margin: 0 0 25px 0; font-weight: 700; }
-        input { width: 100%; padding: 14px; font-size: 19px; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; font-family: 'Cairo'; outline: none; font-weight: bold; box-sizing: border-box; }
-        button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
         
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            padding: 10px; 
+            direction: rtl; 
+        }
+
+        .main-card { 
+            width: 100%; 
+            max-width: 420px; 
+            background: white; 
+            padding: 25px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            text-align: center; 
+            border-top: 6px solid var(--primary); 
+            box-sizing: border-box;
+        }
+
+        .logo-img { width: 100px; margin-bottom: 10px; }
+        h1 { color: var(--primary); font-size: 18px; margin: 5px 0; font-weight: 900; }
+        h2 { color: var(--accent); font-size: 16px; margin: 0 0 20px 0; font-weight: 700; }
+
+        input { 
+            width: 100%; 
+            padding: 14px; 
+            font-size: 18px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 12px; 
+            text-align: center; 
+            font-family: 'Cairo'; 
+            font-weight: bold; 
+            box-sizing: border-box; 
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        button { 
+            width: 100%; 
+            padding: 14px; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 17px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+
         #resultBox { display: none; margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px; }
         
-        /* التنسيق السحري: مربعين بجانب بعضهما في كل الأجهزة */
+        .student-name { font-size: 19px; font-weight: 900; color: #333; margin-bottom: 20px; }
+
+        /* تنسيق عمودي دائم: مربع تحت مربع */
         .grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; /* هذا سيجعلهم 2 بجانب بعض */
+            display: flex;
+            flex-direction: column;
             gap: 10px; 
         }
 
         .grid-item { 
             background: #f8fafc; 
-            padding: 10px; 
+            padding: 12px 20px; 
             border-radius: 12px; 
             border: 1px solid #edf2f7; 
             display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            min-height: 60px;
+            justify-content: space-between; 
+            align-items: center;
         }
 
-        .label { font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 5px; }
+        .label { font-size: 14px; color: #64748b; font-weight: bold; }
         .score-row { font-size: 18px; font-weight: 900; color: var(--primary); }
+        .max-score { color: #94a3b8; font-size: 14px; font-weight: normal; margin-right: 4px; }
 
-        .final-banner { margin-top: 20px; background: linear-gradient(135deg, var(--primary), #004a99); color: white; padding: 15px; border-radius: 15px; }
-        .total-row { font-size: 32px; font-weight: 900; color: var(--accent); }
-        .footer { margin-top: 30px; font-size: 11px; color: #94a3b8; }
+        .final-banner { 
+            margin-top: 20px; 
+            background: linear-gradient(135deg, var(--primary), #004a99); 
+            color: white; 
+            padding: 15px; 
+            border-radius: 15px; 
+        }
+
+        .total-row { font-size: 32px; font-weight: 900; color: var(--accent); margin: 5px 0; }
+        .grade-text { font-size: 18px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; margin-top: 5px; }
+
+        .footer { margin-top: 25px; font-size: 11px; color: #94a3b8; }
     </style>
 </head>
 <body>
+
 <div class="main-card">
     <img src="image_166501.jpg" alt="Logo" class="logo-img">
     <h1>المعهد العالي للعلوم والتقنية</h1>
     <h2>المنصة الرقمية للدكتور صابر الفطيسي</h2>
+
     <div class="search-area">
         <input type="text" id="studentId" placeholder="أدخل رقم القيد">
         <button id="searchBtn" onclick="searchResult()">استعلام عن النتيجة</button>
     </div>
+
     <div id="resultBox">
-        <div id="dispName" style="font-size:20px; font-weight:900; margin-bottom:15px; color:#333;"></div>
+        <div class="student-name" id="dispName"></div>
         <div class="grid">
-            <div class="grid-item"><span class="label">عملي نصفي</span><span id="val1" class="score-row"></span></div>
-            <div class="grid-item"><span class="label">نظري نصفي</span><span id="val2" class="score-row"></span></div>
-            <div class="grid-item"><span class="label">النهائي العملي</span><span id="val3" class="score-row"></span></div>
-            <div class="grid-item"><span class="label">نظري نهائي</span><span id="val4" class="score-row"></span></div>
+            <div class="grid-item"><span class="label">عملي نصفي</span><span class="score-row"><span id="val1"></span><span class="max-score">/ 15</span></span></div>
+            <div class="grid-item"><span class="label">نظري نصفي</span><span class="score-row"><span id="val2"></span><span class="max-score">/ 25</span></span></div>
+            <div class="grid-item"><span class="label">النهائي العملي</span><span class="score-row"><span id="val3"></span><span class="max-score">/ 15</span></span></div>
+            <div class="grid-item"><span class="label">نظري نهائي</span><span class="score-row"><span id="val4"></span><span class="max-score">/ 45</span></span></div>
         </div>
         <div class="final-banner">
-            <div>المجموع النهائي</div>
-            <div class="total-row"><span id="valTotal"></span> / 100</div>
-            <div id="valGrade" style="font-size: 18px; font-weight: 700; margin-top: 5px;"></div>
+            <div style="font-size: 14px; opacity: 0.9;">المجموع الكلي</div>
+            <div class="total-row"><span id="valTotal"></span> <small style="font-size:18px; color:white;">/ 100</small></div>
+            <div id="valGrade" class="grade-text"></div>
         </div>
     </div>
     <div class="footer">جميع الحقوق محفوظة &copy; د. صابر الفطيسي - 2026</div>
@@ -75,6 +134,7 @@
         const id = document.getElementById('studentId').value.trim();
         const btn = document.getElementById('searchBtn');
         if(!id) return;
+        
         btn.innerText = "جاري البحث...";
         btn.disabled = true;
 
