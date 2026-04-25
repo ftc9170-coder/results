@@ -8,60 +8,26 @@
     <style>
         :root { --primary: #003366; --accent: #d4af37; --bg: #f4f7f9; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; display: flex; justify-content: center; padding: 10px; direction: rtl; }
-        
-        .main-card { 
-            width: 100%; max-width: 420px; background: white; padding: 25px; 
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            text-align: center; border-top: 6px solid var(--primary); box-sizing: border-box;
-        }
-
+        .main-card { width: 100%; max-width: 450px; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; border-top: 6px solid var(--primary); box-sizing: border-box; }
         .logo-img { width: 100px; margin-bottom: 10px; }
-        
-        /* اسم المعهد بخط كبير وواضح مع السماح بالالتفاف لسطرين */
-        h1 { 
-            color: var(--primary); 
-            font-size: 19px; 
-            margin: 10px 0; 
-            font-weight: 900; 
-            line-height: 1.5;
-            word-wrap: break-word;
-        }
-        
+        h1 { color: var(--primary); font-size: 19px; margin: 10px 0; font-weight: 900; line-height: 1.5; }
         h2 { color: var(--accent); font-size: 17px; margin: 0 0 25px 0; font-weight: 700; }
-
-        input { 
-            width: 100%; padding: 15px; font-size: 19px; border: 2px solid #e2e8f0; 
-            border-radius: 12px; text-align: center; font-family: 'Cairo'; 
-            font-weight: bold; box-sizing: border-box; outline: none; margin-bottom: 12px;
-        }
-
-        button { 
-            width: 100%; padding: 15px; background: var(--primary); color: white; 
-            border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer;
-        }
-
-        #resultBox { display: none; margin-top: 25px; border-top: 2px solid #f0f0f0; padding-top: 20px; }
+        input { width: 100%; padding: 15px; font-size: 19px; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; font-family: 'Cairo'; font-weight: bold; box-sizing: border-box; outline: none; margin-bottom: 12px; }
+        button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; }
         
-        /* صناديق النتائج تحت بعضها دائماً */
-        .box-item {
-            background: #f8fafc; margin-bottom: 12px; padding: 18px 20px; 
-            border-radius: 12px; border: 1px solid #edf2f7; 
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .item-label { font-size: 16px; color: #64748b; font-weight: bold; }
-        .item-score { font-size: 20px; font-weight: 900; color: var(--primary); }
-        .item-max { color: #94a3b8; font-size: 15px; font-weight: normal; }
-
-        .final-banner { 
-            margin-top: 20px; background: linear-gradient(135deg, var(--primary), #004a99); 
-            color: white; padding: 20px; border-radius: 15px; 
-        }
-
-        .total-row { font-size: 36px; font-weight: 900; color: var(--accent); margin: 5px 0; }
-        .grade-text { font-size: 20px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; margin-top: 5px; }
-
-        .footer { margin-top: 30px; font-size: 12px; color: #94a3b8; }
+        #resultsContainer { display: none; margin-top: 25px; text-align: right; }
+        .student-header { background: #f0f4f8; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 1px solid #d1d9e0; }
+        
+        .subject-card { background: white; border: 2px solid var(--primary); border-radius: 15px; padding: 15px; margin-bottom: 25px; position: relative; }
+        .subject-title { background: var(--primary); color: white; padding: 5px 15px; border-radius: 8px; display: inline-block; margin-bottom: 15px; font-weight: bold; }
+        
+        .box-item { background: #f8fafc; margin-bottom: 8px; padding: 12px 15px; border-radius: 10px; border: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center; }
+        .item-label { font-size: 14px; color: #64748b; font-weight: bold; }
+        .item-score { font-size: 18px; font-weight: 900; color: var(--primary); }
+        
+        .final-banner { margin-top: 15px; background: linear-gradient(135deg, var(--primary), #004a99); color: white; padding: 15px; border-radius: 12px; text-align: center; }
+        .total-num { font-size: 30px; font-weight: 900; color: var(--accent); }
+        .footer { margin-top: 30px; font-size: 12px; color: #94a3b8; text-align: center; }
     </style>
 </head>
 <body>
@@ -71,25 +37,17 @@
     <h1>المعهد العالي للعلوم والتقنية - سوق الخميس امسيحل</h1>
     <h2>المنصة الرقمية للدكتور صابر الفطيسي</h2>
 
-    <div class="search-area">
-        <input type="text" id="studentId" placeholder="أدخل رقم القيد">
-        <button id="searchBtn" onclick="searchResult()">استعلام عن النتيجة</button>
-    </div>
+    <input type="text" id="studentId" placeholder="أدخل رقم القيد">
+    <button id="searchBtn" onclick="searchResult()">استعلام عن النتائج</button>
 
-    <div id="resultBox">
-        <div id="dispName" style="font-size: 21px; font-weight: 900; color: #333; margin-bottom: 20px;"></div>
-        
-        <div class="box-item"><span class="item-label">عملي نصفي</span><span class="item-score"><span id="val1"></span><span class="item-max"> / 15</span></span></div>
-        <div class="box-item"><span class="item-label">نظري نصفي</span><span class="item-score"><span id="val2"></span><span class="item-max"> / 25</span></span></div>
-        <div class="box-item"><span class="item-label">النهائي العملي</span><span class="item-score"><span id="val3"></span><span class="item-max"> / 15</span></span></div>
-        <div class="box-item"><span class="item-label">نظري نهائي</span><span class="item-score"><span id="val4"></span><span class="item-max"> / 45</span></span></div>
-
-        <div class="final-banner">
-            <div style="font-size: 15px; opacity: 0.9;">المجموع النهائي</div>
-            <div class="total-row"><span id="valTotal"></span> <small style="font-size:22px; color:white;">/ 100</small></div>
-            <div id="valGrade" class="grade-text"></div>
+    <div id="resultsContainer">
+        <div class="student-header">
+            <div style="font-size: 14px; color: #64748b;">اسم الطالب</div>
+            <div id="dispName" style="font-size: 20px; font-weight: 900; color: #333;"></div>
         </div>
+        <div id="subjectsList"></div>
     </div>
+    
     <div class="footer">جميع الحقوق محفوظة &copy; د. صابر الفطيسي - 2026</div>
 </div>
 
@@ -97,27 +55,47 @@
     async function searchResult() {
         const id = document.getElementById('studentId').value.trim();
         const btn = document.getElementById('searchBtn');
+        const list = document.getElementById('subjectsList');
         if(!id) return;
+        
         btn.innerText = "جاري البحث...";
         btn.disabled = true;
+        list.innerHTML = ""; // مسح النتائج السابقة
+
         const scriptUrl = "https://script.google.com/macros/s/AKfycbzh7xlyzMsJ6KCIU1d5bw_cELhxxizrfMCIdKgrcqUNfPE9753cYYtx4gaa-2ccdaX7/exec"; 
+
         try {
             const response = await fetch(scriptUrl + "?v=" + Date.now());
             const rows = await response.json();
-            const student = rows.find(r => String(r[0]).trim() === id);
-            if (student) {
-                document.getElementById('resultBox').style.display = 'block';
-                document.getElementById('dispName').innerText = student[1];
-                document.getElementById('val1').innerText = student[2] || '0';
-                document.getElementById('val2').innerText = student[3] || '0';
-                document.getElementById('val3').innerText = student[4] || '⏳';
-                document.getElementById('val4').innerText = student[5] || '⏳';
-                document.getElementById('valTotal').innerText = student[6] || '0';
-                document.getElementById('valGrade').innerText = "التقدير: " + (student[7] || '--');
+            
+            // البحث عن كل الأسطر التي تطابق رقم القيد
+            const studentRecords = rows.filter(r => String(r[0]).trim() === id);
+
+            if (studentRecords.length > 0) {
+                document.getElementById('resultsContainer').style.display = 'block';
+                document.getElementById('dispName').innerText = studentRecords[0][1]; // الاسم من أول سجل
+
+                studentRecords.forEach(record => {
+                    const card = `
+                        <div class="subject-card">
+                            <div class="subject-title">${record[2] || 'مادة غير مسمى'}</div>
+                            <div class="box-item"><span class="item-label">عملي نصفي</span><span class="item-score">${record[3] || 0} / 15</span></div>
+                            <div class="box-item"><span class="item-label">نظري نصفي</span><span class="item-score">${record[4] || 0} / 25</span></div>
+                            <div class="box-item"><span class="item-label">النهائي العملي</span><span class="item-score">${record[5] || '⏳'} / 15</span></div>
+                            <div class="box-item"><span class="item-label">نظري نهائي</span><span class="item-score">${record[6] || '⏳'} / 45</span></div>
+                            <div class="final-banner">
+                                <div style="font-size: 13px;">المجموع النهائي</div>
+                                <div class="total-num">${record[7] || 0} / 100</div>
+                                <div style="font-size: 16px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 5px; margin-top: 5px;">التقدير: ${record[8] || '--'}</div>
+                            </div>
+                        </div>
+                    `;
+                    list.innerHTML += card;
+                });
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             } else { alert("رقم القيد غير موجود"); }
         } catch (e) { alert("حدث خطأ في الاتصال"); }
-        finally { btn.innerText = "استعلام عن النتيجة"; btn.disabled = false; }
+        finally { btn.innerText = "استعلام عن النتائج"; btn.disabled = false; }
     }
 </script>
 </body>
