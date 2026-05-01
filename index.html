@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* تعريف الألوان للوضعين */
         :root { 
             --primary: #003366; --accent: #d4af37; --bg: #f4f7f9; --card-bg: #ffffff; 
             --text-main: #333; --text-sub: #64748b; --item-bg: #f8fafc; --midterm: #e1effe;
@@ -18,46 +17,79 @@
             --text-main: #f1f5f9; --text-sub: #94a3b8; --item-bg: #334155; --midterm: #1e3a8a;
         }
 
-        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; display: flex; justify-content: center; padding: 10px; direction: rtl; transition: 0.3s; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; display: flex; justify-content: center; padding: 20px 10px; direction: rtl; transition: all 0.4s ease; }
         
-        /* زر الوضع الليلي */
-        .theme-switch { position: absolute; top: 20px; left: 20px; background: var(--card-bg); border: 2px solid var(--primary); color: var(--primary); padding: 8px 12px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 12px; display: flex; align-items: center; gap: 5px; z-index: 100; transition: 0.3s; }
+        /* تصميم الزر المطور */
+        .theme-toggle-wrapper {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
 
-        .main-card { width: 100%; max-width: 450px; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; border-top: 6px solid var(--primary); box-sizing: border-box; position: relative; transition: 0.3s; }
-        
-        .logo-img { width: 100px; margin-bottom: 10px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
-        h1 { color: var(--primary); font-size: 19px; margin: 10px 0; font-weight: 900; }
-        h2 { color: var(--accent); font-size: 17px; margin: 0 0 25px 0; font-weight: 700; }
-        
-        input { width: 100%; padding: 15px; font-size: 19px; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; font-family: 'Cairo'; font-weight: bold; box-sizing: border-box; outline: none; margin-bottom: 12px; background: var(--bg); color: var(--text-main); }
-        button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        .theme-switch {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        #resultsContainer { display: none; margin-top: 25px; text-align: right; }
-        .student-header { background: var(--item-bg); padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 1px solid var(--text-sub); }
-        
-        .subject-card { background: var(--card-bg); border: 2px solid var(--primary); border-radius: 15px; padding: 15px; margin-bottom: 25px; position: relative; transition: 0.3s; }
-        .subject-title { background: var(--primary); color: white; padding: 5px 15px; border-radius: 8px; display: inline-block; margin-bottom: 15px; font-weight: bold; }
-        
-        .rank-badge { background: linear-gradient(45deg, #d4af37, #f1c40f); color: #000; padding: 8px; border-radius: 8px; text-align: center; font-weight: 900; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(212,175,55,0.3); }
+        .theme-switch:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
 
-        .box-item { background: var(--item-bg); margin-bottom: 8px; padding: 12px 15px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
-        .midterm-box { background: var(--midterm); border: 1px solid var(--primary); }
+        .theme-switch i { font-size: 18px; }
+
+        .main-card { width: 100%; max-width: 450px; background: var(--card-bg); padding: 30px 25px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center; border-top: 8px solid var(--primary); position: relative; transition: all 0.4s ease; }
+        
+        .logo-img { width: 110px; margin-bottom: 15px; }
+        h1 { color: var(--primary); font-size: 20px; margin: 10px 0; font-weight: 900; }
+        h2 { color: var(--accent); font-size: 17px; margin: 0 0 30px 0; font-weight: 700; }
+        
+        input { width: 100%; padding: 16px; font-size: 18px; border: 2px solid #e2e8f0; border-radius: 14px; text-align: center; font-family: 'Cairo'; font-weight: bold; box-sizing: border-box; outline: none; margin-bottom: 15px; background: var(--bg); color: var(--text-main); transition: 0.3s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0,51,102,0.1); }
+
+        button#searchBtn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 14px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(0,51,102,0.2); }
+        button#searchBtn:active { transform: scale(0.98); }
+
+        #resultsContainer { display: none; margin-top: 30px; }
+        .student-header { background: var(--item-bg); padding: 18px; border-radius: 16px; margin-bottom: 25px; border: 1px solid rgba(0,0,0,0.05); }
+        
+        .subject-card { background: var(--card-bg); border: 2px solid var(--primary); border-radius: 20px; padding: 20px; margin-bottom: 30px; position: relative; }
+        .subject-title { background: var(--primary); color: white; padding: 6px 20px; border-radius: 10px; display: inline-block; margin-bottom: 20px; font-weight: bold; font-size: 15px; }
+        
+        .rank-badge { background: linear-gradient(45deg, #d4af37, #f1c40f); color: #000; padding: 10px; border-radius: 12px; text-align: center; font-weight: 900; margin-bottom: 20px; font-size: 16px; }
+
+        .box-item { background: var(--item-bg); margin-bottom: 10px; padding: 14px 18px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .midterm-box { border: 1.5px solid var(--primary); background: var(--midterm); }
         
         .item-label { font-size: 14px; color: var(--text-sub); font-weight: bold; }
-        .item-score { font-size: 19px; font-weight: 900; color: var(--text-main); }
+        .item-score { font-size: 20px; font-weight: 900; color: var(--text-main); }
         .max-score { font-size: 13px; color: var(--text-sub); font-weight: normal; margin-right: 4px; }
         
-        .final-banner { margin-top: 15px; background: linear-gradient(135deg, var(--primary), #004a99); color: white; padding: 15px; border-radius: 12px; text-align: center; }
-        .total-num { font-size: 28px; font-weight: 900; color: var(--accent); }
-        .footer { margin-top: 30px; font-size: 12px; color: var(--text-sub); text-align: center; }
+        .final-banner { margin-top: 20px; background: linear-gradient(135deg, var(--primary), #004a99); color: white; padding: 20px; border-radius: 16px; }
+        .total-num { font-size: 32px; font-weight: 900; color: var(--accent); }
+        .footer { margin-top: 40px; font-size: 13px; color: var(--text-sub); opacity: 0.8; }
     </style>
 </head>
 <body data-theme="light">
 
-<button class="theme-switch" onclick="toggleTheme()">
-    <span id="theme-icon">🌙</span> <span id="theme-text">الوضع الليلي</span>
-</button>
+<div class="theme-toggle-wrapper">
+    <button class="theme-switch" onclick="toggleTheme()">
+        <span id="theme-icon" style="font-size: 1.2em;">🌙</span>
+        <span id="theme-text">الوضع الليلي</span>
+    </button>
+</div>
 
 <div class="main-card">
     <img src="image_166501.jpg" alt="Logo" class="logo-img">
@@ -69,12 +101,13 @@
 
     <div id="resultsContainer">
         <div class="student-header">
-            <div id="dispName" style="font-size: 20px; font-weight: 900; color: var(--text-main);"></div>
+            <div style="font-size: 13px; color: var(--text-sub); margin-bottom: 5px;">نتائج الطالب:</div>
+            <div id="dispName" style="font-size: 22px; font-weight: 900; color: var(--text-main);"></div>
         </div>
         <div id="subjectsList"></div>
     </div>
     
-    <div class="footer">جميع الحقوق محفوظة &copy; د. صابر الفطيسي - 2026</div>
+    <div class="footer">تطوير وإشراف: د. صابر الفطيسي &copy; 2026</div>
 </div>
 
 <script>
@@ -126,22 +159,21 @@
                     const totalScoreVal = parseFloat(record[8]) || 0;
                     const totalScoreTxt = (record[8] === "" || record[8] === undefined) ? "قيد الرصد" : record[8];
 
-                    // حساب الترتيب
                     const allGrades = rows.filter(r => String(r[2]).trim() === subjectName && !isNaN(parseFloat(r[8])))
                         .map(r => ({ id: String(r[0]), grade: parseFloat(r[8]) }))
                         .sort((a, b) => b.grade - a.grade);
                     const rankIndex = allGrades.findIndex(x => x.id === id);
                     
                     let rankMsg = "";
-                    if (rankIndex === 0) rankMsg = `<div class="rank-badge">🏆 الترتيب الأول في مادة ${subjectName}</div>`;
-                    else if (rankIndex === 1) rankMsg = `<div class="rank-badge">🥈 الترتيب الثاني في مادة ${subjectName}</div>`;
-                    else if (rankIndex === 2) rankMsg = `<div class="rank-badge">🥉 الترتيب الثالث في مادة ${subjectName}</div>`;
+                    if (rankIndex === 0) rankMsg = `<div class="rank-badge">🏆 مـبارك! الترتيب الأول في المادة</div>`;
+                    else if (rankIndex === 1) rankMsg = `<div class="rank-badge">🥈 مـبارك! الترتيب الثاني في المادة</div>`;
+                    else if (rankIndex === 2) rankMsg = `<div class="rank-badge">🥉 مـبارك! الترتيب الثالث في المادة</div>`;
 
                     if (totalScoreVal >= 50 && !hasCelebrated) { celebrate(); hasCelebrated = true; }
 
                     let rowsHtml = isReactionEng ? `
-                        <div class="box-item midterm-box"><span class="item-label">النصفي</span><span class="item-score">${record[5] || '⏳'}<span class="max-score">/ 40</span></span></div>
-                        <div class="box-item"><span class="item-label">النهائي</span><span class="item-score">${record[7] || '⏳'}<span class="max-score">/ 60</span></span></div>
+                        <div class="box-item midterm-box"><span class="item-label">الامتحان النصفي</span><span class="item-score">${record[5] || '⏳'}<span class="max-score">/ 40</span></span></div>
+                        <div class="box-item"><span class="item-label">الامتحان النهائي</span><span class="item-score">${record[7] || '⏳'}<span class="max-score">/ 60</span></span></div>
                     ` : `
                         <div class="box-item"><span class="item-label">عملي نصفي</span><span class="item-score">${record[3] || '⏳'}<span class="max-score">/ 15</span></span></div>
                         <div class="box-item"><span class="item-label">نظري نصفي</span><span class="item-score">${record[4] || '⏳'}<span class="max-score">/ 25</span></span></div>
@@ -150,10 +182,11 @@
                         <div class="box-item"><span class="item-label">النهائي نظري</span><span class="item-score">${record[7] || '⏳'}<span class="max-score">/ 45</span></span></div>
                     `;
 
-                    list.innerHTML += `<div class="subject-card">${rankMsg}<div class="subject-title">${subjectName}</div>${rowsHtml}<div class="final-banner"><div style="font-size: 13px;">المجموع الكلي</div><div class="total-num">${totalScoreTxt}${totalScoreTxt==="قيد الرصد"?"":'<span style="font-size:16px"> / 100</span>'}</div><div style="font-weight:bold; margin-top:5px;">التقدير: ${record[9]||'--'}</div></div></div>`;
+                    list.innerHTML += `<div class="subject-card">${rankMsg}<div class="subject-title">${subjectName}</div>${rowsHtml}<div class="final-banner"><div style="font-size: 14px; opacity: 0.9;">المجموع الكلي النهائي</div><div class="total-num">${totalScoreTxt}${totalScoreTxt==="قيد الرصد"?"":'<span style="font-size:18px; opacity:0.7"> / 100</span>'}</div><div style="font-weight:900; margin-top:8px; border-top: 1px solid rgba(255,255,255,0.2); padding-top:8px;">التقدير العام: ${record[9]||'--'}</div></div></div>`;
                 });
-            } else { alert("رقم القيد غير موجود"); }
-        } catch (e) { alert("خطأ في الاتصال"); }
+                window.scrollTo({ top: document.querySelector('.student-header').offsetTop - 20, behavior: 'smooth' });
+            } else { alert("عذراً، رقم القيد هذا غير مسجل لدينا."); }
+        } catch (e) { alert("خطأ في الاتصال بالخادم، يرجى المحاولة لاحقاً."); }
         finally { btn.innerText = "استعلام عن النتائج"; btn.disabled = false; }
     }
 </script>
