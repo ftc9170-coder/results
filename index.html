@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة د. صابر الفطيسي</title>
+    <title>منصة نتيجتي الرقمية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -25,8 +25,8 @@
         .main-card { width: 100%; max-width: 450px; background: var(--card-bg); padding: 30px 25px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center; border-top: 8px solid var(--primary); position: relative; }
         
         .logo-img { width: 100px; margin-bottom: 15px; }
-        h1 { color: var(--primary); font-size: 19px; margin: 10px 0; font-weight: 900; }
-        h2 { color: var(--accent); font-size: 16px; margin: 0 0 25px 0; font-weight: 700; }
+        h1 { color: var(--primary); font-size: 22px; margin: 10px 0; font-weight: 900; }
+        h2 { color: var(--accent); font-size: 16px; margin: 0 0 25px 0; font-weight: 700; line-height: 1.6; }
         
         input { width: 100%; padding: 15px; font-size: 18px; border: 2px solid #e2e8f0; border-radius: 14px; text-align: center; font-family: 'Cairo'; font-weight: bold; box-sizing: border-box; outline: none; margin-bottom: 15px; background: var(--bg); color: var(--text-main); }
 
@@ -50,7 +50,7 @@
         
         .final-banner { margin-top: 15px; background: linear-gradient(135deg, var(--primary), #004a99); color: white; padding: 18px; border-radius: 14px; text-align: center; }
         .total-num { font-size: 28px; font-weight: 900; color: var(--accent); }
-        .footer { margin-top: 35px; font-size: 12px; color: var(--text-sub); text-align: center; font-weight: bold; }
+        .footer { margin-top: 35px; font-size: 12px; color: var(--text-sub); text-align: center; font-weight: bold; line-height: 1.5; }
     </style>
 </head>
 <body data-theme="light">
@@ -63,8 +63,8 @@
     </div>
 
     <img src="image_166501.jpg" alt="Logo" class="logo-img">
-    <h1>المعهد العالي للعلوم والتقنية - سوق الخميس امسيحل</h1>
-    <h2>المنصة الرقمية للدكتور صابر الفطيسي</h2>
+    <h1>منصة نتيجتي الرقمية</h1>
+    <h2>المعهد العالي للعلوم والتقنية - سوق الخميس امسيحل<br>بإشراف د. صابر الفطيسي & د. محمد الطويبي</h2>
 
     <input type="text" id="studentId" placeholder="أدخل رقم القيد">
     <button id="searchBtn" onclick="searchResult()">استعلام عن النتائج</button>
@@ -76,7 +76,7 @@
         <div id="subjectsList"></div>
     </div>
     
-    <div class="footer">حقوق المنصة محفوظة &copy; د. صابر الفطيسي - 2026</div>
+    <div class="footer">حقوق منصة نتيجتي الرقمية محفوظة &copy; 2026<br>تطوير: د. صابر الفطيسي</div>
 </div>
 
 <script>
